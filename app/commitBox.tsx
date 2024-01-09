@@ -63,17 +63,22 @@ export async function CommitBox({ session }: { session: Session }) {
       .contributionDays[0].contributionLevel;
   const totalContribution =
     data.viewer.contributionsCollection.contributionCalendar.totalContributions;
-  const color = CL[contributionLevel];
 
   return (
     <div>
+      <p className="text-center text-lg font-semibold">
+        {new Date().toDateString()}
+      </p>
       <div
-        className={clsx(
-          "mx-auto w-64 h-64 max-w-lg border rounded-lg",
-          `bg-[${color}]`
-        )}
+        className={clsx("mx-auto w-64 h-64 rounded-lg", {
+          "bg-[#ebedf0]": contributionLevel === "NONE",
+          "bg-[#9be9a8]": contributionLevel === "FIRST_QUARTILE",
+          "bg-[#40c463]": contributionLevel === "SECOND_QUARTILE",
+          "bg-[#30a14e]": contributionLevel === "THIRD_QUARTILE",
+          "bg-[#216e39]": contributionLevel === "FOURTH_QUARTILE",
+        })}
       ></div>
-      <div>
+      <div className="my-2">
         <p>
           {totalContribution === 0
             ? "You have not made any contribution today, Come back later when you contribute to get your sharebale image"
