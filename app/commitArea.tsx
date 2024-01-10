@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { Session } from "next-auth";
+import { CommitCard } from "./commitCard";
 
 const CL = {
   NONE: "#ebedf0",
@@ -27,7 +28,7 @@ type APIRes = {
   };
 };
 
-export async function CommitBox({ session }: { session: Session }) {
+async function getTodaysCommitInfo(session: Session) {
   const res = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
@@ -64,9 +65,20 @@ export async function CommitBox({ session }: { session: Session }) {
   const totalContribution =
     data.viewer.contributionsCollection.contributionCalendar.totalContributions;
 
+  return {
+    contributionLevel,
+    totalContribution,
+  };
+}
+
+export async function CommitArea({ session }: { session: Session }) {
+  // const { contributionLevel, totalContribution } = await getTodaysCommitInfo(
+  //   session
+  // );
+
   return (
-    <div>
-      <p className="text-center text-lg font-semibold">
+    <>
+      {/* <p className="text-center text-lg font-semibold">
         {new Date().toDateString()}
       </p>
       <div
@@ -84,7 +96,8 @@ export async function CommitBox({ session }: { session: Session }) {
             ? "You have not made any contribution today, Come back later when you contribute to get your sharebale image"
             : "Congratzzz!, You have completed today's Challenge. Keep going!"}
         </p>
-      </div>
-    </div>
+      </div> */}
+      <CommitCard />
+    </>
   );
 }

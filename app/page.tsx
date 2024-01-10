@@ -1,13 +1,13 @@
 import { auth } from "./auth";
 import { SignIn, SignOut } from "./buttons";
-import { CommitBox } from "./commitBox";
+import { CommitArea } from "./commitArea";
 
 export default async function Home() {
   const session = await auth();
 
   return (
-    <main className="max-w-xl flex flex-col  container mx-auto my-4 px-4 md:px-0">
-      <div className="flex items-center justify-between">
+    <main className="max-w-2xl flex flex-col mx-auto my-2 px-4 md:px-0">
+      <div className="h-16 flex items-center justify-between">
         <div>
           <h1 className="font-medium text-xl inline-flex">#1commitperday</h1>
           {session && (
@@ -20,9 +20,9 @@ export default async function Home() {
 
         {session ? <SignOut /> : <SignIn />}
       </div>
-      <div className="my-16">
+      <div className="mt-16 ">
         {session ? (
-          <CommitBox session={session} />
+          <CommitArea session={session} />
         ) : (
           <div className="">
             <div className="mx-auto w-64 h-64 border rounded-lg bg-[#ebedf0]"></div>
