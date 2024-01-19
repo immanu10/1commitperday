@@ -1,5 +1,8 @@
-import { error } from "console";
-import { IBM_Plex_Mono } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
+
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+});
 
 function getDevicePixelRatio() {
   if (typeof window === "undefined") return 1;
@@ -7,23 +10,13 @@ function getDevicePixelRatio() {
 }
 
 const scale = getDevicePixelRatio();
-const width = 300;
-const height = 150;
-const fontFace = "IBM Plex Mono";
+const width = 600;
+const height = 280;
+const margin = 50;
+const titleHeight = 30;
 
 export function drawCard(canvas: HTMLCanvasElement) {
-  //   const myFont = new FontFace(
-  //     "IBM Plex Mono",
-  //     "url(https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&display=swap)"
-  //   );
-  //   myFont
-  //     .load()
-  //     .then((font) => {
-  //       document.fonts.add(font);
-
   render(canvas);
-  // })
-  // .catch((error) => console.log({ error }));
 }
 
 function render(canvas: HTMLCanvasElement) {
@@ -41,44 +34,82 @@ function render(canvas: HTMLCanvasElement) {
   ctx.fillStyle = "#101217";
   ctx.fillRect(0, 0, width, height);
 
-  const squareSize = 100;
-  const cornerRadius = 10;
+  const squareSize = 180;
+  const cornerRadius = 16;
 
   ctx.fillStyle = "#27d545";
   //   ctx.fillRect(100, 25, squareSize, squareSize);
+
+  const commitBoxX = margin;
+  const commitBoxY = titleHeight + 30;
   ctx.beginPath();
-  ctx.moveTo(100 + cornerRadius, 25);
-  ctx.lineTo(100 + squareSize - cornerRadius, 25);
+  ctx.moveTo(commitBoxX + cornerRadius, commitBoxY);
+  ctx.lineTo(commitBoxX + squareSize - cornerRadius, commitBoxY);
   ctx.arcTo(
-    100 + squareSize,
-    25,
-    100 + squareSize,
-    25 + cornerRadius,
+    commitBoxX + squareSize,
+    commitBoxY,
+    commitBoxX + squareSize,
+    commitBoxY + cornerRadius,
     cornerRadius
   );
-  ctx.lineTo(100 + squareSize, 25 + squareSize - cornerRadius);
+  ctx.lineTo(commitBoxX + squareSize, commitBoxY + squareSize - cornerRadius);
   ctx.arcTo(
-    100 + squareSize,
-    25 + squareSize,
-    100 + squareSize - cornerRadius,
-    25 + squareSize,
+    commitBoxX + squareSize,
+    commitBoxY + squareSize,
+    commitBoxX + squareSize - cornerRadius,
+    commitBoxY + squareSize,
     cornerRadius
   );
-  ctx.lineTo(100 + cornerRadius, 25 + squareSize);
+  ctx.lineTo(commitBoxX + cornerRadius, commitBoxY + squareSize);
   ctx.arcTo(
-    100,
-    25 + squareSize,
-    100,
-    25 + squareSize - cornerRadius,
+    commitBoxX,
+    commitBoxY + squareSize,
+    commitBoxX,
+    commitBoxY + squareSize - cornerRadius,
     cornerRadius
   );
-  ctx.lineTo(100, 25 + cornerRadius);
-  ctx.arcTo(100, 25, 100 + cornerRadius, 25, cornerRadius);
+  ctx.lineTo(commitBoxX, commitBoxY + cornerRadius);
+  ctx.arcTo(
+    commitBoxX,
+    commitBoxY,
+    commitBoxX + cornerRadius,
+    commitBoxY,
+    cornerRadius
+  );
   ctx.closePath();
   ctx.fill();
 
   ctx.fillStyle = "#ffffff";
-  ctx.font = "8px 'IBM Plex Mono'";
 
-  ctx.fillText("@immanu10", 100, 22);
+  ctx.font = `16px ${robotoMono.style.fontFamily}`;
+  ctx.fillText("@immanu10", margin, titleHeight + 10);
+
+  ctx.fillStyle = "#dddddd";
+
+  ctx.font = `10px ${robotoMono.style.fontFamily}`;
+  ctx.fillText(
+    "1commitperday.vercel.com",
+    width - (margin + 10) * 3,
+    titleHeight + 10
+  );
+
+  ctx.fillStyle = "#ffffff";
+
+  ctx.font = `72px ${robotoMono.style.fontFamily}`;
+  ctx.fillText("8", commitBoxX + squareSize + 30, commitBoxY + 55);
+
+  ctx.fillStyle = "#ffffff";
+
+  ctx.font = `24px ${robotoMono.style.fontFamily}`;
+  ctx.fillText("contributions", commitBoxX + squareSize + 30, commitBoxY + 100);
+
+  ctx.fillStyle = "#ffffff";
+
+  ctx.font = `24px ${robotoMono.style.fontFamily}`;
+  ctx.fillText("today", commitBoxX + squareSize + 30, commitBoxY + 135);
+
+  ctx.fillStyle = "#dddddd";
+
+  ctx.font = `12px ${robotoMono.style.fontFamily}`;
+  ctx.fillText("4, Jan 2024", commitBoxX + squareSize + 30, commitBoxY + 175);
 }
