@@ -6,10 +6,10 @@ export default async function Home() {
   const session = await auth();
 
   return (
-    <main className="max-w-2xl flex flex-col mx-auto my-2 px-4 md:px-0">
+    <main className="max-w-2xl h-full flex flex-col mx-auto px-4 md:px-0">
       <div className="h-16 flex items-center justify-between">
         <div>
-          <h1 className="font-medium text-xl inline-flex">#1commitperday</h1>
+          <h1 className="font-medium text-lg inline-flex">#1commitperday</h1>
           {session && (
             <span className="text-sm text-slate-500 ml-1">
               <span className="text-xl">/</span>
@@ -20,17 +20,17 @@ export default async function Home() {
 
         {session ? <SignOut /> : <SignIn />}
       </div>
-      <div className="mt-16 ">
-        {session ? (
+      <div className="mt-16 flex-1">
+        {/* {session ? (
           <CommitArea session={session} />
-        ) : (
-          <div className="">
-            <div className="mx-auto w-64 h-64 border rounded-lg bg-[#ebedf0]"></div>
-            <p className="text-center my-2">
-              {"Sign in to view your today's commit"}
-            </p>
-          </div>
-        )}
+        ) : ( */}
+        <div className="">
+          <div className="mx-auto w-64 h-64 border rounded-lg bg-[#ebedf0]"></div>
+          <p className="text-center my-2">
+            {"Sign in to view your today's commit"}
+          </p>
+        </div>
+        {/* )} */}
       </div>
     </main>
   );

@@ -9,19 +9,45 @@ function getDevicePixelRatio() {
   return window.devicePixelRatio || 1;
 }
 
+const themes = {
+  default: {
+    background: "#101217",
+    color: "#ffffff",
+    metaColor: "#dddddd",
+    NONE: "#161b22",
+    FIRST_QUARTILE: "#003820",
+    SECOND_QUARTILE: "#00602d",
+    THIRD_QUARTILE: "#10983d",
+    FOURTH_QUARTILE: "#27d545",
+  },
+};
+
+type Options = {
+  username: string;
+  contributionLevel:
+    | "NONE"
+    | "FIRST_QUARTILE"
+    | "SECOND_QUARTILE"
+    | "THIRD_QUARTILE"
+    | "FOURTH_QUARTILE";
+  totalContribution: number;
+  date: string;
+};
+
 const scale = getDevicePixelRatio();
-const width = 600;
-const height = 280;
-const margin = 50;
+const canvasWidth = 600;
+const canvasHeight = 280;
+const canvasMargin = 50;
 const titleHeight = 30;
 
-export function drawCard(canvas: HTMLCanvasElement) {
-  render(canvas);
-}
+const squareSize = 180;
+const borderRadius = 16;
+const APP_NAME = "1commitperday.com";
 
-function render(canvas: HTMLCanvasElement) {
-  canvas.width = width * scale;
-  canvas.height = height * scale;
+export function drawCard(canvas: HTMLCanvasElement, options: Options) {
+  const theme = themes.default;
+  canvas.width = canvasWidth * scale;
+  canvas.height = canvasHeight * scale;
 
   const ctx = canvas.getContext("2d");
 
@@ -31,85 +57,85 @@ function render(canvas: HTMLCanvasElement) {
 
   ctx.scale(scale, scale);
 
-  ctx.fillStyle = "#101217";
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = theme.background;
+  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-  const squareSize = 180;
-  const cornerRadius = 16;
+  ctx.fillStyle = theme[options.contributionLevel];
 
-  ctx.fillStyle = "#27d545";
-  //   ctx.fillRect(100, 25, squareSize, squareSize);
-
-  const commitBoxX = margin;
+  const commitBoxX = canvasMargin;
   const commitBoxY = titleHeight + 30;
+
   ctx.beginPath();
-  ctx.moveTo(commitBoxX + cornerRadius, commitBoxY);
-  ctx.lineTo(commitBoxX + squareSize - cornerRadius, commitBoxY);
+  ctx.moveTo(commitBoxX + borderRadius, commitBoxY);
+  ctx.lineTo(commitBoxX + squareSize - borderRadius, commitBoxY);
   ctx.arcTo(
     commitBoxX + squareSize,
     commitBoxY,
     commitBoxX + squareSize,
-    commitBoxY + cornerRadius,
-    cornerRadius
+    commitBoxY + borderRadius,
+    borderRadius
   );
-  ctx.lineTo(commitBoxX + squareSize, commitBoxY + squareSize - cornerRadius);
+  ctx.lineTo(commitBoxX + squareSize, commitBoxY + squareSize - borderRadius);
   ctx.arcTo(
     commitBoxX + squareSize,
     commitBoxY + squareSize,
-    commitBoxX + squareSize - cornerRadius,
+    commitBoxX + squareSize - borderRadius,
     commitBoxY + squareSize,
-    cornerRadius
+    borderRadius
   );
-  ctx.lineTo(commitBoxX + cornerRadius, commitBoxY + squareSize);
+  ctx.lineTo(commitBoxX + borderRadius, commitBoxY + squareSize);
   ctx.arcTo(
     commitBoxX,
     commitBoxY + squareSize,
     commitBoxX,
-    commitBoxY + squareSize - cornerRadius,
-    cornerRadius
+    commitBoxY + squareSize - borderRadius,
+    borderRadius
   );
-  ctx.lineTo(commitBoxX, commitBoxY + cornerRadius);
+  ctx.lineTo(commitBoxX, commitBoxY + borderRadius);
   ctx.arcTo(
     commitBoxX,
     commitBoxY,
-    commitBoxX + cornerRadius,
+    commitBoxX + borderRadius,
     commitBoxY,
-    cornerRadius
+    borderRadius
   );
   ctx.closePath();
+
+  ctx.strokeStyle = "#ffffff0d";
+  ctx.lineWidth = 10;
+  ctx.stroke();
   ctx.fill();
 
-  ctx.fillStyle = "#ffffff";
-
+  ctx.fillStyle = theme.color;
   ctx.font = `16px ${robotoMono.style.fontFamily}`;
-  ctx.fillText("@immanu10", margin, titleHeight + 10);
+  ctx.fillText(`@${options.username}`, canvasMargin, titleHeight + 10);
 
-  ctx.fillStyle = "#dddddd";
+  ctx.fillStyle = theme.metaColor;
 
   ctx.font = `10px ${robotoMono.style.fontFamily}`;
-  ctx.fillText(
-    "1commitperday.vercel.com",
-    width - (margin + 10) * 3,
-    titleHeight + 10
-  );
+  ctx.fillText(APP_NAME, canvasWidth - canvasMargin * 3, titleHeight + 10);
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = theme.color;
 
   ctx.font = `72px ${robotoMono.style.fontFamily}`;
-  ctx.fillText("8", commitBoxX + squareSize + 30, commitBoxY + 55);
+  ctx.fillText(
+    options.totalContribution.toString(),
+    commitBoxX + squareSize + 30,
+    commitBoxY + 55
+  );
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = theme.color;
 
   ctx.font = `24px ${robotoMono.style.fontFamily}`;
   ctx.fillText("contributions", commitBoxX + squareSize + 30, commitBoxY + 100);
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = theme.color;
 
   ctx.font = `24px ${robotoMono.style.fontFamily}`;
   ctx.fillText("today", commitBoxX + squareSize + 30, commitBoxY + 135);
 
-  ctx.fillStyle = "#dddddd";
+  ctx.fillStyle = theme.metaColor;
 
   ctx.font = `12px ${robotoMono.style.fontFamily}`;
-  ctx.fillText("4, Jan 2024", commitBoxX + squareSize + 30, commitBoxY + 175);
+  ctx.fillText(options.date, commitBoxX + squareSize + 30, commitBoxY + 175);
 }

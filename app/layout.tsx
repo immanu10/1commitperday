@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { clsx } from "clsx";
 
-const plexMono = IBM_Plex_Mono({
-  weight: "500",
-  subsets: ["cyrillic"],
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -20,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={clsx("min-h-screen", plexMono.className)}>
+      <body className={clsx("min-h-screen", robotoMono.className)}>
         {children}
       </body>
     </html>

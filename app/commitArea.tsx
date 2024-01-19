@@ -20,6 +20,7 @@ type APIRes = {
           weeks: {
             contributionDays: {
               contributionLevel: keyof typeof CL;
+              date: string;
             }[];
           }[];
         };
@@ -45,6 +46,7 @@ async function getTodaysCommitInfo(session: Session) {
               weeks {
                 contributionDays {
                   contributionLevel
+                  date
                 }
               }    
             }
@@ -64,10 +66,14 @@ async function getTodaysCommitInfo(session: Session) {
       .contributionDays[0].contributionLevel;
   const totalContribution =
     data.viewer.contributionsCollection.contributionCalendar.totalContributions;
+  const date =
+    data.viewer.contributionsCollection.contributionCalendar.weeks[0]
+      .contributionDays[0].date;
 
   return {
     contributionLevel,
     totalContribution,
+    date,
   };
 }
 

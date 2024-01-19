@@ -21,7 +21,12 @@ export function CommitCard() {
       console.log("Something went wrong");
       return;
     }
-    drawCard(canvasRef.current);
+    drawCard(canvasRef.current, {
+      contributionLevel: "NONE",
+      totalContribution: 3,
+      username: "manoj",
+      date: "20 Jan,2024",
+    });
   };
 
   return (
