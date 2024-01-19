@@ -1,4 +1,5 @@
 import { Roboto_Mono } from "next/font/google";
+import { canvasData } from "./api";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -22,18 +23,6 @@ const themes = {
   },
 };
 
-type Options = {
-  username: string;
-  contributionLevel:
-    | "NONE"
-    | "FIRST_QUARTILE"
-    | "SECOND_QUARTILE"
-    | "THIRD_QUARTILE"
-    | "FOURTH_QUARTILE";
-  totalContribution: number;
-  date: string;
-};
-
 const scale = getDevicePixelRatio();
 const canvasWidth = 600;
 const canvasHeight = 280;
@@ -44,7 +33,7 @@ const squareSize = 180;
 const borderRadius = 16;
 const APP_NAME = "1commitperday.com";
 
-export function drawCard(canvas: HTMLCanvasElement, options: Options) {
+export function drawCard(canvas: HTMLCanvasElement, options: canvasData) {
   const theme = themes.default;
   canvas.width = canvasWidth * scale;
   canvas.height = canvasHeight * scale;
