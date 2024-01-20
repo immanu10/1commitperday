@@ -31,7 +31,7 @@ const titleHeight = 30;
 
 const squareSize = 180;
 const borderRadius = 16;
-const APP_NAME = "1commitperday.com";
+const APP_NAME = "1commitperday.vercel.app";
 
 export function drawCard(canvas: HTMLCanvasElement, options: canvasData) {
   const theme = themes.default;
@@ -102,7 +102,7 @@ export function drawCard(canvas: HTMLCanvasElement, options: canvasData) {
   ctx.fillStyle = theme.metaColor;
 
   ctx.font = `10px ${robotoMono.style.fontFamily}`;
-  ctx.fillText(APP_NAME, canvasWidth - canvasMargin * 3, titleHeight + 10);
+  ctx.fillText(APP_NAME, canvasWidth - canvasMargin * 4, titleHeight + 10);
 
   ctx.fillStyle = theme.color;
 

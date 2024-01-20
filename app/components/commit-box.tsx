@@ -135,7 +135,7 @@ function sharePng(canvas: HTMLCanvasElement) {
       if (blob) {
         navigator.share({
           title: "#1commitperday challenge",
-          text: "Check out my today's Github commit.",
+          text: "Check out my today's Github commit. Get your's at https://1commitperday.vercel.app",
           files: [
             new File(
               [blob],
