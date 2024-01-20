@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { drawCard } from "./lib/canvas";
-import { canvasData } from "./lib/api";
 import { CopyBtn, DownloadBtn, ShareBtn } from "./buttons";
 import { toast } from "sonner";
+import { drawCard } from "../lib/canvas";
+import { canvasData } from "../lib/api";
 
-export function CommitCard({ data }: { data: canvasData }) {
+export function CommitBox({ data }: { data: canvasData | null }) {
   const [loading, setLoading] = useState(true);
   const canvasRef = useRef(null);
 
@@ -15,7 +15,9 @@ export function CommitCard({ data }: { data: canvasData }) {
       console.log("Something went wrong");
       return;
     }
-    drawCard(canvasRef.current, data);
+    if (data) {
+      drawCard(canvasRef.current, data);
+    }
     setLoading(false);
   }, [data]);
 
@@ -28,6 +30,14 @@ export function CommitCard({ data }: { data: canvasData }) {
   const onShare = () => {
     sharePng(canvasRef.current!);
   };
+
+  if (data === null) {
+    return (
+      <p className="text-sm text-center">
+        Something went wrong. No data Found.
+      </p>
+    );
+  }
 
   return (
     <>
@@ -56,7 +66,7 @@ export function CommitCard({ data }: { data: canvasData }) {
           )}
         </div>
       )}
-      <canvas ref={canvasRef} className="w-full" />
+      {data !== null && <canvas ref={canvasRef} className="w-full" />}
     </>
   );
 }
@@ -123,23 +133,19 @@ function sharePng(canvas: HTMLCanvasElement) {
   try {
     canvas.toBlob(async (blob) => {
       if (blob) {
-        navigator
-          .share({
-            title: "1commitperday challenge",
-            text: "Check out my today's commit.",
-            files: [
-              new File(
-                [blob],
-                `${new Date().toISOString().split("T")[0]}-1commitperday.png`,
-                {
-                  type: blob.type,
-                }
-              ),
-            ],
-          })
-          .catch(() => {
-            console.error("Cannot share png");
-          });
+        navigator.share({
+          title: "#1commitperday challenge",
+          text: "Check out my today's Github commit.",
+          files: [
+            new File(
+              [blob],
+              `${new Date().toISOString().split("T")[0]}-1commitperday.png`,
+              {
+                type: blob.type,
+              }
+            ),
+          ],
+        });
       } else {
         console.error("Blob is null ");
       }

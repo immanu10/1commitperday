@@ -1,10 +1,11 @@
-import { Suspense } from "react";
 import { auth } from "./auth";
-import { SignIn, SignOut } from "./buttons";
-import { CommitArea } from "./commitArea";
+import { SignOut, SignIn } from "./components/buttons";
+import { CommitBox } from "./components/commit-box";
+import { getTodaysCommitInfo } from "./lib/api";
 
 export default async function Home() {
   const session = await auth();
+  const contributionData = await getTodaysCommitInfo(session);
 
   return (
     <>
@@ -23,7 +24,7 @@ export default async function Home() {
       </div>
       <div className="mt-24">
         {session ? (
-          <CommitArea session={session} />
+          <CommitBox data={contributionData} />
         ) : (
           <div className="bg-[#101217] h-64 w-full flex items-center justify-center px-2">
             <p className="text-white text-lg text-center">
@@ -32,29 +33,6 @@ export default async function Home() {
           </div>
         )}
       </div>
-      <div className="h-4"></div>
     </>
-  );
-}
-
-function LoadingSkelton() {
-  return (
-    <div className="h-72 w-full bg-[#101217] px-12 py-8 space-y-6">
-      <div className="flex justify-between animate-pulse">
-        <div className="bg-[#161b22] h-6 w-28 rounded-lg"></div>
-        <div className="bg-[#161b22] h-6 w-28 rounded-lg"></div>
-      </div>
-      <div className="flex space-x-6 animate-pulse">
-        <div className="bg-[#161b22] h-44 w-44 rounded-xl"></div>
-        <div className="flex flex-col justify-between animate-pulse">
-          <div className="bg-[#161b22] h-16 w-8 rounded-lg"></div>
-          <div className="space-y-2">
-            <div className="bg-[#161b22] h-6 w-44 rounded-sm"></div>
-            <div className="bg-[#161b22] h-6 w-28 rounded-sm"></div>
-          </div>
-          <div className="bg-[#161b22] h-4 w-24 rounded-sm"></div>
-        </div>
-      </div>
-    </div>
   );
 }

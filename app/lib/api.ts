@@ -24,7 +24,8 @@ type APIRes = {
   };
 };
 
-export async function getTodaysCommitInfo(session: Session) {
+export async function getTodaysCommitInfo(session: Session | null) {
+  if (session === null) return null;
   const res = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
@@ -79,4 +80,14 @@ export async function getTodaysCommitInfo(session: Session) {
   };
 }
 
-export type canvasData = Awaited<ReturnType<typeof getTodaysCommitInfo>>;
+export type canvasData = {
+  username: string;
+  contributionLevel:
+    | "NONE"
+    | "FIRST_QUARTILE"
+    | "SECOND_QUARTILE"
+    | "THIRD_QUARTILE"
+    | "FOURTH_QUARTILE";
+  totalContribution: number;
+  date: string;
+};

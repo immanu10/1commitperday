@@ -27,7 +27,7 @@ export default function RootLayout({
             <p className="text-center text-xs leading-loose text-slate-600 space-x-2">
               Made with ❤️ by{" "}
               <a
-                href={""}
+                href={"https://x.com/immanu10x"}
                 target="_blank"
                 rel="noreferrer"
                 className="font-medium underline"
@@ -36,7 +36,7 @@ export default function RootLayout({
               </a>
               <span>|</span>
               <a
-                href={""}
+                href={"https://github.com/immanu10/1commitperday"}
                 target="_blank"
                 rel="noreferrer"
                 className="font-medium underline"
