@@ -3,6 +3,7 @@ import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { clsx } from "clsx";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/react";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({
           </footer>
         </div>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
