@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { auth } from "./auth";
 import { SignIn, SignOut } from "./buttons";
 import { CommitArea } from "./commitArea";
@@ -6,7 +7,7 @@ export default async function Home() {
   const session = await auth();
 
   return (
-    <main className="max-w-2xl h-full min-h-screen flex flex-col mx-auto px-4 md:px-0">
+    <>
       <div className="h-16 flex items-center justify-between">
         <div>
           <h1 className="font-medium text-lg inline-flex">#1commitperday</h1>
@@ -20,39 +21,40 @@ export default async function Home() {
 
         {session ? <SignOut /> : <SignIn />}
       </div>
-      <div className="mt-24 flex-1">
+      <div className="mt-24">
         {session ? (
           <CommitArea session={session} />
         ) : (
-          <div className="bg-[#101217] h-64 w-full flex items-center justify-center">
-            <p className="text-white text-lg">
+          <div className="bg-[#101217] h-64 w-full flex items-center justify-center px-2">
+            <p className="text-white text-lg text-center">
               {"Sign in to view your today's commit"}
             </p>
           </div>
         )}
       </div>
-      <div className="py-2 border-t">
-        <p className="text-center text-xs leading-loose text-slate-600 space-x-2">
-          Made with ❤️ by{" "}
-          <a
-            href={""}
-            target="_blank"
-            rel="noreferrer"
-            className="font-medium underline"
-          >
-            @immanu10
-          </a>
-          <span>|</span>
-          <a
-            href={""}
-            target="_blank"
-            rel="noreferrer"
-            className="font-medium underline"
-          >
-            Github
-          </a>
-        </p>
+      <div className="h-4"></div>
+    </>
+  );
+}
+
+function LoadingSkelton() {
+  return (
+    <div className="h-72 w-full bg-[#101217] px-12 py-8 space-y-6">
+      <div className="flex justify-between animate-pulse">
+        <div className="bg-[#161b22] h-6 w-28 rounded-lg"></div>
+        <div className="bg-[#161b22] h-6 w-28 rounded-lg"></div>
       </div>
-    </main>
+      <div className="flex space-x-6 animate-pulse">
+        <div className="bg-[#161b22] h-44 w-44 rounded-xl"></div>
+        <div className="flex flex-col justify-between animate-pulse">
+          <div className="bg-[#161b22] h-16 w-8 rounded-lg"></div>
+          <div className="space-y-2">
+            <div className="bg-[#161b22] h-6 w-44 rounded-sm"></div>
+            <div className="bg-[#161b22] h-6 w-28 rounded-sm"></div>
+          </div>
+          <div className="bg-[#161b22] h-4 w-24 rounded-sm"></div>
+        </div>
+      </div>
+    </div>
   );
 }
