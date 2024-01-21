@@ -16,6 +16,7 @@ type APIRes = {
                 | "THIRD_QUARTILE"
                 | "FOURTH_QUARTILE";
               date: string;
+              contributionCount: number;
             }[];
           }[];
         };
@@ -43,6 +44,7 @@ export async function getTodaysCommitInfo(session: Session | null) {
                   contributionDays {
                     contributionLevel
                     date
+                    contributionCount
                   }
                 }    
               }
@@ -51,19 +53,23 @@ export async function getTodaysCommitInfo(session: Session | null) {
         }
       `,
       variables: {
-        from: new Date().toISOString().split("T")[0] + "T00:00:00Z",
-        to: new Date().toISOString().split("T")[0] + "T23:59:59Z",
+        from:
+          new Date(new Date().setDate(new Date().getDate() - 1))
+            .toISOString()
+            .split("T")[0] + "T00:00:00Z",
+        to: new Date().toISOString().split("T")[0] + "T00:00:00Z",
       },
     }),
   });
   const { data } = (await res.json()) as APIRes;
   const contributionLevel =
-    data.viewer.contributionsCollection.contributionCalendar.weeks[0]
+    data.viewer.contributionsCollection.contributionCalendar.weeks[1]
       .contributionDays[0].contributionLevel;
   const totalContribution =
-    data.viewer.contributionsCollection.contributionCalendar.totalContributions;
+    data.viewer.contributionsCollection.contributionCalendar.weeks[1]
+      .contributionDays[0].contributionCount;
   const date =
-    data.viewer.contributionsCollection.contributionCalendar.weeks[0]
+    data.viewer.contributionsCollection.contributionCalendar.weeks[1]
       .contributionDays[0].date;
 
   const username = data.viewer.login;
