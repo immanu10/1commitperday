@@ -53,24 +53,33 @@ export async function getTodaysCommitInfo(session: Session | null) {
         }
       `,
       variables: {
-        from:
-          new Date(new Date().setDate(new Date().getDate() - 1))
-            .toISOString()
-            .split("T")[0] + "T00:00:00Z",
-        to: new Date().toISOString().split("T")[0] + "T00:00:00Z",
+        from: new Date(
+          Date.UTC(new Date().getUTCFullYear(), 0, 1, 0, 0, 0, 0)
+        ).toISOString(),
+        to: new Date().toISOString().split("T")[0] + "T00:00:00.000Z",
       },
     }),
   });
   const { data } = (await res.json()) as APIRes;
+  const weeksLength =
+    data.viewer.contributionsCollection.contributionCalendar.weeks.length;
+  const contributionDaysLength =
+    data.viewer.contributionsCollection.contributionCalendar.weeks[
+      weeksLength - 1
+    ].contributionDays.length;
+
   const contributionLevel =
-    data.viewer.contributionsCollection.contributionCalendar.weeks[1]
-      .contributionDays[0].contributionLevel;
+    data.viewer.contributionsCollection.contributionCalendar.weeks[
+      weeksLength - 1
+    ].contributionDays[contributionDaysLength - 1].contributionLevel;
   const totalContribution =
-    data.viewer.contributionsCollection.contributionCalendar.weeks[1]
-      .contributionDays[0].contributionCount;
+    data.viewer.contributionsCollection.contributionCalendar.weeks[
+      weeksLength - 1
+    ].contributionDays[contributionDaysLength - 1].contributionCount;
   const date =
-    data.viewer.contributionsCollection.contributionCalendar.weeks[1]
-      .contributionDays[0].date;
+    data.viewer.contributionsCollection.contributionCalendar.weeks[
+      weeksLength - 1
+    ].contributionDays[contributionDaysLength - 1].date;
 
   const username = data.viewer.login;
 
