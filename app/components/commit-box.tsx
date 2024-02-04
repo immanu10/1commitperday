@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CopyBtn, DownloadBtn, ShareBtn } from "./buttons";
+import { ConfettiBtn, CopyBtn, DownloadBtn, ShareBtn } from "./buttons";
 import { toast } from "sonner";
 import { drawCard } from "../lib/canvas";
 import { canvasData } from "../lib/api";
+import confetti from "canvas-confetti";
 
 export function CommitBox({ data }: { data: canvasData | null }) {
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,9 @@ export function CommitBox({ data }: { data: canvasData | null }) {
     }
     if (data) {
       drawCard(canvasRef.current, data);
+      if (data.totalContribution > 0) {
+        confetti();
+      }
     }
     setLoading(false);
   }, [data]);
@@ -62,6 +66,7 @@ export function CommitBox({ data }: { data: canvasData | null }) {
               {global.navigator && "share" in navigator && (
                 <ShareBtn onClick={onShare} />
               )}
+              <ConfettiBtn onClick={() => confetti()} />
             </div>
           )}
         </div>
